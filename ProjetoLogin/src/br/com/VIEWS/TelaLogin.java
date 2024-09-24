@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.sql.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,28 +25,51 @@ public class TelaLogin extends javax.swing.JFrame {
     PreparedStatement pst = null;
     ResultSet rs = null;
 
+    public void Logar() {
+        String sql = "select * from tb_usuarios where login = ? and senha = ?";
+
+        try {
+            //preparar a consulta n banco, em função do que foi inserido nas caixas de texto. 
+            pst = conexao.prepareStatement(sql);
+            pst.setString(1, txtLogin.getText());
+            pst.setString(2, txtSenha.getText());
+
+            //executar  a query
+            rs = pst.executeQuery();
+
+            if (rs.next()) {
+                TelaPrincipal principal = new TelaPrincipal();
+                principal.setVisible(true);//mudamos a visualizacao da tela
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválidos.");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "tela Login " + e);
+
+        }
+    }
+
     public TelaLogin() {
         initComponents();
 
         conexao = ConexaoDao.conector();
-        
+
         ImageIcon icon1 = new ImageIcon("src/img/sim.png");
         Image img1 = icon1.getImage();
-        Image novaImg1 = img1.getScaledInstance(30, 30, Image.SCALE_SMOOTH); 
+        Image novaImg1 = img1.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon redimensionadoIcon1 = new ImageIcon(novaImg1);
-        
+
         ImageIcon icon2 = new ImageIcon("src/img/nao.png");
         Image img2 = icon2.getImage();
-        Image novaImg2 = img2.getScaledInstance(30, 30, Image.SCALE_SMOOTH); 
+        Image novaImg2 = img2.getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon redimensionadoIcon2 = new ImageIcon(novaImg2);
 
         if (conexao != null) {
-            
+
             lblStatus.setText("Conectado");
             lblStatus.setIcon(redimensionadoIcon1);
             lblStatus.setForeground(Color.GREEN);
-            
-           
+
         } else {
             lblStatus.setText("Não conectado");
             lblStatus.setIcon(redimensionadoIcon2);
@@ -78,6 +102,11 @@ public class TelaLogin extends javax.swing.JFrame {
 
         btnLogar.setText("Logar");
         btnLogar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Senha");
 
@@ -130,6 +159,11 @@ public class TelaLogin extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogarActionPerformed
+    //chamar metodo logar
+        Logar();
+    }//GEN-LAST:event_btnLogarActionPerformed
 
     /**
      * @param args the command line arguments
