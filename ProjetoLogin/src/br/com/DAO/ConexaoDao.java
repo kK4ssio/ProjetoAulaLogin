@@ -11,7 +11,7 @@ public class ConexaoDao {
         java.sql.Connection conexao = null;
         String driver = "com.mysql.jdbc.Driver";
         
-        String url = "jdbc:mysql://localhost:3306/sistemajv";
+        String url = "jdbc:mysql://localhost:3306/projetoaula";
         String user = "root";
         String password = "root";
         
@@ -24,7 +24,7 @@ public class ConexaoDao {
         catch (Exception e){
             JOptionPane.showMessageDialog(null, "Conexao" +e);
             return null;
-            
+                                
         }
     } 
 }
