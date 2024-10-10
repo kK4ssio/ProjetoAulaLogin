@@ -30,31 +30,7 @@ public class TelaUsuarios extends javax.swing.JFrame {
         conexao = ConexaoDao.conector();
     }
 
-    //metodo pesquisar 
-    public void pesquisar() {
-       String sql = "select * from tb_usuarios where id_usuario = ?";
-
-        try {
-
-            pst = conexao.prepareStatement(sql);
-            pst.setString(1, txtIdUsuario.getText());
-           rs = pst.executeQuery();
-          if (rs.next()) {
-
-                txtNomeUsuario.setText(rs.getString(2));
-                txtSenha.setText(rs.getString(4));
-                txtLogin.setText(rs.getString(3));
-
-           } else {
-                JOptionPane.showMessageDialog(null, "Usuario não cadastrado");
-                Limpar();
-            }
-       } catch (Exception e) {
-           JOptionPane.showMessageDialog(null, "tela Usuario" + e);
-        }
-    }
-
-    public void Limpar() {
+    public void Limpa() {
         txtIdUsuario.setText(null);
         txtSenha.setText(null);
         txtNomeUsuario.setText(null);
@@ -82,8 +58,8 @@ public class TelaUsuarios extends javax.swing.JFrame {
         txtLogin = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnDeletar = new javax.swing.JButton();
         btnInserir = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -116,12 +92,17 @@ public class TelaUsuarios extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton1.setText("jButton1");
-
-        jButton2.setText("jButton2");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnDeletar.setText("Excluir");
+        btnDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarActionPerformed(evt);
             }
         });
 
@@ -141,13 +122,12 @@ public class TelaUsuarios extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(btnInserir))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2)))
+                            .addComponent(btnDeletar)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnInserir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(jLabel3)))
@@ -157,13 +137,13 @@ public class TelaUsuarios extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel3)
-                .addGap(103, 103, 103)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
                 .addComponent(btnInserir)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnEditar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDeletar)
+                .addGap(22, 22, 22))
         );
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -196,10 +176,10 @@ public class TelaUsuarios extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 132, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -231,7 +211,7 @@ public class TelaUsuarios extends javax.swing.JFrame {
                             .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 93, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -246,41 +226,79 @@ public class TelaUsuarios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-     //chamada do metodo pequisar
-        pesquisar();
-        
-      
+        //chamada do metodo pequisar
+//       pesquisar();
+      int id_usuario = Integer.parseInt(txtIdUsuario.getText());
+
+        UsuarioDTO objUsuarioDTO = new UsuarioDTO();
+        objUsuarioDTO.setId_Usuario(id_usuario);
+
+        UsuarioDAO objUsuarioDAO = new UsuarioDAO();
+       objUsuarioDAO.pesquisar(objUsuarioDTO);
+
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         //botao de limpar campos.
-        Limpar();
+        //Limpa();
+        
+        UsuarioDAO objLimpa = new UsuarioDAO();
+        objLimpa.Limpar();
+       
+
     }//GEN-LAST:event_btnLimparActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarActionPerformed
+        String id_usuario = txtIdUsuario.getText();
+
+        UsuarioDTO objUsuarioDTO = new UsuarioDTO();
+        objUsuarioDTO.setId_Usuario(Integer.parseInt(id_usuario));
+
+        UsuarioDAO objUsuarioDAO = new UsuarioDAO();
+        objUsuarioDAO.deletar(objUsuarioDTO);
+
+
+    }//GEN-LAST:event_btnDeletarActionPerformed
 
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
-    //captura de dados na tela usuario    
+        //captura de dados na tela usuario    
         int id_usuario = Integer.parseInt(txtIdUsuario.getText());
         String nome_usuario = txtNomeUsuario.getText();
         String login_usuario = txtLogin.getText();
         String senha_usuario = txtSenha.getText();
-        
-    //transferencia de dados para UsuarioDTO    
+
+        //transferencia de dados para UsuarioDTO    
         UsuarioDTO objUsuarioDTO = new UsuarioDTO();
         objUsuarioDTO.setId_Usuario(id_usuario);
         objUsuarioDTO.setLoginUsuario(login_usuario);
         objUsuarioDTO.setNomeUsuario(nome_usuario);
         objUsuarioDTO.setSenhaUsuario(senha_usuario);
-        
-    //criacao do objeto da classe UsuarioDAO para inserir o usuario    
+
+        //criacao do objeto da classe UsuarioDAO para inserir o usuario    
         UsuarioDAO objusuarioDAO = new UsuarioDAO();
         objusuarioDAO.inserirUsuario(objUsuarioDTO);
-        Limpar();
-                
+        Limpa();
+
     }//GEN-LAST:event_btnInserirActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        //captura de dados na tela usuario    
+        String id_usuario = txtIdUsuario.getText();
+        String nome_usuario = txtNomeUsuario.getText();
+        String login_usuario = txtLogin.getText();
+        String senha_usuario = txtSenha.getText();
+
+        //transferencia de dados para UsuarioDTO    
+        UsuarioDTO objUsuarioDTO = new UsuarioDTO();
+        objUsuarioDTO.setId_Usuario(Integer.parseInt(id_usuario));
+        objUsuarioDTO.setLoginUsuario(login_usuario);
+        objUsuarioDTO.setNomeUsuario(nome_usuario);
+        objUsuarioDTO.setSenhaUsuario(senha_usuario);
+
+        //criacao do objeto da classe UsuarioDAO para editar o usuario.
+        UsuarioDAO objusuarioDAO = new UsuarioDAO();
+        objusuarioDAO.editar(objUsuarioDTO);
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,13 +334,13 @@ public class TelaUsuarios extends javax.swing.JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDeletar;
+    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnInserir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnPesquisar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -331,9 +349,9 @@ public class TelaUsuarios extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblid;
     private javax.swing.JLabel lblnome;
-    private javax.swing.JTextField txtIdUsuario;
-    private javax.swing.JTextField txtLogin;
-    private javax.swing.JTextField txtNomeUsuario;
-    private javax.swing.JTextField txtSenha;
+    public static javax.swing.JTextField txtIdUsuario;
+    public static javax.swing.JTextField txtLogin;
+    public static javax.swing.JTextField txtNomeUsuario;
+    public static javax.swing.JTextField txtSenha;
     // End of variables declaration//GEN-END:variables
 }
